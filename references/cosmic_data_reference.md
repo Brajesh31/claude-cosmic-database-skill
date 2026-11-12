@@ -123,3 +123,31 @@ Do not delete rows with missing annotations without understanding why they are m
 Follow the current citation instructions supplied by the data provider. In methods and outputs, record the product, release, genome assembly, access date, and any filtering or transformation performed.
 
 COSMIC data are research resources. Their presence in this database is not, by itself, a clinical interpretation or treatment recommendation.
+
+
+## Using the included download helper
+
+The helper accepts an HTTPS download URL issued by the authenticated portal's Scripted Download flow. It does not log in, store passwords, or construct private download URLs.
+
+Example:
+
+~~~bash
+python scripts/download_cosmic.py \
+  --url "$COSMIC_DOWNLOAD_URL" \
+  --output cosmic_mutations.tsv.gz \
+  --data-type mutations \
+  --assembly GRCh38
+~~~
+
+When a checksum is provided by the catalogue, verify it during download:
+
+~~~bash
+python scripts/download_cosmic.py \
+  --url "$COSMIC_DOWNLOAD_URL" \
+  --output cosmic_mutations.tsv.gz \
+  --sha256 "<64-character-sha256>"
+~~~
+
+The URL can contain a short-lived access token. Keep it out of shell history, logs, source control, and shared messages. Obtain a fresh URL from the portal if it expires. The helper refuses non-HTTPS URLs, embedded username/password credentials, empty responses, HTML login pages, and checksum mismatches.
+
+The login and download examples in older skill instructions may not match the current portal workflow. Follow the product-specific Scripted Download instructions shown for the selected release and product.
